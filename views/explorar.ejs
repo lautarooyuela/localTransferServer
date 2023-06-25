@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Explorar archivos</title>
+  <style>
+    ul {
+      list-style: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Explorar archivos</h1>
+  <ul>
+    <% files.forEach(file => { %>
+      <li>
+        <% if (file.isDirectory) { %>
+          <strong><%= file.name %></strong> (Carpeta)
+        <% } else { %>
+          <%= file.name %> (Archivo)
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+  <form action="/descargar" method="post">
+    <button type="submit">Descargar todo</button>
+  </form>
+</body>
+</html>
