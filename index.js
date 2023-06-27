@@ -51,10 +51,6 @@ app.post('/descargar', (req, res) => {
   archive.directory(publicPath, false);
   archive.pipe(res.attachment('archivos.zip'));
 
-  res.on('finish', () => {
-    res.sendStatus(200);
-  });
-
   archive.finalize();
 });
 
