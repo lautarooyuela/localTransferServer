@@ -1,28 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Explorar archivos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Transfer Server</title>
   <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
     ul {
       list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    .container{
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      margin-top: 5em;
+    }
+
+    .formUpload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .subcontainer{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .button {
+      padding: 20px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+
+    .buttonUpload {
+      padding: 20px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-top: 2em;
+      padding-left: 55px;
+      padding-right: 55px;
+    }
+
+    /* Estilos para dispositivos móviles */
+    @media only screen and (max-width: 600px) {
+      body {
+        margin: 10px;
+      }
+
+      h1 {
+        font-size: 1.5em;
+      }
+
+      li {
+        font-size: 0.9em;
+      }
+
+      button {
+        padding: 8px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Explorar archivos</h1>
-  <ul>
-    <% files.forEach(file => { %>
-      <li>
-        <% if (file.isDirectory) { %>
-          <strong><%= file.name %></strong> (Carpeta)
-        <% } else { %>
-          <%= file.name %> (Archivo)
-        <% } %>
-      </li>
-    <% }) %>
-  </ul>
-  <form action="/descargar" method="post">
-    <button type="submit">Descargar todo</button>
-  </form>
+  <h1>Local Transfer Server</h1>
+  <div class="container">
+    <div class="subcontainer">
+      <h1>Explorar archivos para Descargar</h1>
+      <ul>
+        <% files.forEach(file => { %>
+          <li>
+            <% if (file.isDirectory) { %>
+              <strong><%= file.name %></strong> (Carpeta)
+            <% } else { %>
+              <%= file.name %>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+      <form action="/descargar" method="post">
+        <button class="button" type="submit">Descargar Archivos</button>
+      </form>
+    
+      <h1>Explorar archivos para Subir</h1>
+      <form action="/subir" method="post" enctype="multipart/form-data" class="formUpload">
+        <input type="file" name="archivos" multiple />
+        <button class="buttonUpload" type="submit">Subir Archivos</button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
