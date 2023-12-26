@@ -4,6 +4,7 @@ const port = 3000;
 const fs = require('fs');
 const path = require('path');
 const archiver = require('archiver');
+const multer = require('multer');
 
 app.set('view engine', 'ejs');
 
@@ -54,7 +55,29 @@ app.post('/descargar', (req, res) => {
   archive.finalize();
 });
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Directorio donde se guardarán los archivos
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname); // Utilizamos el nombre original del archivo
+  }
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/subir', upload.array('archivos'), (req, res) => {
+
+  const archivos = req.files; 
+  archivos.forEach(archivo => {
+    const newPath = path.join(__dirname, 'uploads', archivo.originalname);
+    fs.renameSync(archivo.path, newPath);
+  });
+  console.log("Archivos Cargados Satisfactoriamente")
+  res.redirect('/');
+});
+
 
 app.listen(port, () => {
-  console.log(`Servidor Express escuchando en http://localhost:${port}`);
+  /* console.log(`Servidor Express escuchando en http://localhost:${port}`); */
 });
