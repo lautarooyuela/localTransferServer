@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensajes Local Transfer</title>
+  <link rel="stylesheet" href="messagesStyles.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="/" onclick="volverPrincipal()">Volver a Principal</a>
+        <a href="#" onclick="borrarMensajes()">Borrar Mensajes</a>
+     </div>
+    <div class="main-container">
+        <div class="messages-container">
+          <h1>Mensajes</h1>
+          <ul id="mensajes-list"></ul>
+        </div>
+        <div class="bottom-content">
+          <textarea id="nuevo-mensaje" rows="4" placeholder="Escribe tu mensaje" onkeydown="enviarConEnter(event)"></textarea>
+          <button class="button" onclick="enviarMensaje()">Enviar</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

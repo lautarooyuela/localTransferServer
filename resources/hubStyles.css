@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+
+  .hub {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .hub-link {
+    display: block;
+    margin: 2em;
+    padding: 3em 3em;
+    text-decoration: none;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .hub-link:hover {
+    background-color: #2980b9;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .hub {
+      flex-direction: column;
+    }
+
+    .hub-link {
+      padding: 2em 90%;
+    }
+
+  }
+  
