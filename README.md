@@ -3,9 +3,7 @@ this repository provide a basic server for localhost to transfer different stati
 
 # Pasos para usar la App
 
-1. Crear dentro del repositorio la carpeta "public" donde van a ir todos los archivos para ser descargados desde otro dispositivo
-2. Abrir una nueva terminal y ejecutar el comando "npm i"
-3. Una ves que termine de instalar todas las dependencias ejecutar el comando "npm start"
-4. Luego de levantado el servidor en localhost abrimos una nueva terminal y ejecutamos (para windows) "ip config" para poder ver la ip local del dispositivo donde se esta levantando el servidor
-5. Teniendo la ip del dispositivo server, en el dispositivo al que vamos a enviar los archivos abrimos el navegador y tipamos la siguiente url con la ip que sacamos de el paso anterior "http://$IP:3000"
-6. Todo listo para poder descargar los archivos
+1. Instalacion de dependencias con el archivo "install.bat"
+2. Si hay algun problema con la instalacion, asegurate de tener instalada la ultima version estable de Node.js y npm para continuar
+3. Se puede proseguir a ejecutar el "start.bat" para iniciar el servidor
+4. Listo con esto ya podes ir a la direccion indicada en la consola del "start.bat" desde cualquier dispositivo de tu local para ocupar las herramientas

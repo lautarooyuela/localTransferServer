@@ -5,12 +5,48 @@ const fs = require('fs');
 const path = require('path');
 const archiver = require('archiver');
 const multer = require('multer');
+const sqlite3 = require('sqlite3').verbose();
+const cors = require('cors');
 
 app.set('view engine', 'ejs');
-
 app.use(express.static('public'));
+app.use(express.static('resources'));
+app.use(express.json());
+app.use(cors());
 
+/////////////////////DB///////////////////
+const db = new sqlite3.Database('mensajes.db');
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS mensajes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      contenido TEXT NOT NULL
+    )
+  `);
+});
+///////////////////////////////////////////
+
+///////////////////Multer//////////////////
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
+//////////////////////////////////////////
+
+//////////////////////////////////////////////HUB//////////////////////////////////////
+///ENDPOINT
 app.get('/', (req, res) => {
+  res.redirect('/hub.html');
+});
+
+///////////////////////////////////////////////TRANSFER/////////////////////////////////////////////////
+///ENDPOINT
+app.get('/transfer', (req, res) => {
   const publicPath = path.join(__dirname, 'public');
 
   fs.readdir(publicPath, (err, files) => {
@@ -32,6 +68,7 @@ app.get('/', (req, res) => {
   });
 });
 
+///ENDPOINT
 app.post('/descargar', (req, res) => {
   const publicPath = path.join(__dirname, 'public');
   const zipPath = path.join(__dirname, 'archivos.zip');
@@ -55,17 +92,7 @@ app.post('/descargar', (req, res) => {
   archive.finalize();
 });
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Directorio donde se guardarán los archivos
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname); // Utilizamos el nombre original del archivo
-  }
-});
-
-const upload = multer({ storage: storage });
-
+///ENDPOINT///
 app.post('/subir', upload.array('archivos'), (req, res) => {
 
   const archivos = req.files; 
@@ -74,7 +101,50 @@ app.post('/subir', upload.array('archivos'), (req, res) => {
     fs.renameSync(archivo.path, newPath);
   });
   console.log("Archivos Cargados Satisfactoriamente")
-  res.redirect('/');
+  res.redirect('/transfer');
+});
+
+//////////////////////////////////////////MESSAGES/////////////////////////////////////////////
+
+///ENDPOINT///
+app.get('/getMessages', (req, res) => {
+  db.all('SELECT * FROM mensajes', (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json(rows);
+  });
+});
+
+///ENDPOINT///
+app.post('/postMessages', (req, res) => {
+  const contenido = req.body.contenido;
+
+  if (!contenido) {
+    res.status(400).json({ error: 'El contenido del mensaje es obligatorio.' });
+    return;
+  }
+
+  db.run('INSERT INTO mensajes (contenido) VALUES (?)', [contenido], function (err) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+
+    res.json({ id: this.lastID, contenido });
+  });
+});
+
+///ENDPOINT///
+app.get('/deleteMessages', (req, res) => {
+  db.all('DELETE FROM mensajes', (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json(rows);
+  });
 });
 
 
