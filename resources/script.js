@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   function cargarMensajes() {
-    fetch('http://' + window.location.hostname + ':3000/getMessages')
+    fetch(window.location.protocol + window.location.host + '/getMessages')
       .then(response => response.json())
       .then(mensajes => {
         const mensajesList = document.getElementById('mensajes-list');
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function borrarMensajes() {
-    fetch('http://' + window.location.hostname + ':3000/deleteMessages')
+    fetch(window.location.protocol + window.location.host + '/deleteMessages')
       .then(response => response.json())
       .then(() => {cargarMensajes();})
       .catch(error => console.error('Error al cargar mensajes:', error));
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
   
-    fetch('http://' + window.location.hostname + ':3000/postMessages', {
+    fetch(window.location.protocol + window.location.host + '/postMessages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -65,11 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
   /////////////////////////////////////HUB////////////////////////////////////////
   document.addEventListener('DOMContentLoaded', function () {
     var hub = document.getElementById('hub');
-    var hostname = window.location.hostname;
+    var protocol = window.location.protocol;
+    var host = window.location.host;
   
     var enlaces = [
-      { texto: 'Local Transfer', url: 'http://' + hostname + ':3000/transfer' },
-      { texto: 'Local Messages', url: 'http://' + hostname + ':3000/messages.html' }
+      { texto: 'Local Transfer', url: '/transfer' },
+      { texto: 'Local Messages', url: '/messages.html' }
     ];
   
     enlaces.forEach(function (enlace) {
